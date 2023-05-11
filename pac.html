@@ -16,7 +16,7 @@
         // Definir el mapa del juego como una matriz de caracteres
         var MAP = [
             "##############################",
-            "#O............##............O#",
+            "#.............##.............#",
             "#.####.######.##.######.####.#",
             "#.#  #.#    #.##.#    #.#  #.#",
             "#.####.######.##.######.####.#",
@@ -27,7 +27,7 @@
             "#    #.##            ##.#    #",
             "#    #.## ####  #### ##.#    #",
             "######.## #        # ##.######",
-            "      .   #        #   .      ",
+            "#     .   #        #   .     #",
             "######.## #        # ##.######",
             "#    #.## ########## ##.#    #",
             "#    #.##            ##.#    #",
@@ -39,7 +39,7 @@
             "#......##.##########.##......#",
             "#.#######....####....#######.#",
             "#.##########.####.##########.#",
-            "#O..........................O#",
+            "#............................#",
             "##############################"
         ];
         const PACMAN_SPEED = 1.5;
@@ -67,7 +67,6 @@
         // Definir los colores para los diferentes elementos del juego
         var COLOR_WALL = "#0000ff";
         var COLOR_DOT = "#ffffff";
-        var COLOR_POWERP = "white"
         var COLOR_PACMAN = "#ffff00";
         var COLOR_GHOST1 = "#ff0000";
         var COLOR_GHOST2 = "#ffa500";
@@ -278,6 +277,21 @@
             }
             }
 
+            function checkCollisionWithWalls() {
+            // Comprobar la colisión con cada pared
+            for (let i = 0; i < walls.length; i++) {
+                const wall = walls[i];
+
+                if (pacman.x + pacman.radius > wall.x &&
+                    pacman.x - pacman.radius < wall.x + wall.width &&
+                    pacman.y + pacman.radius > wall.y &&
+                    pacman.y - pacman.radius < wall.y + wall.height) {
+                // Si Pacman está en contacto con la pared, cambiar su dirección
+                pacman.direction = oppositeDirection(pacman.direction);
+                }
+            }
+            }
+
             function checkCollisions() {
             // Calcular la distancia entre el centro del pacman y el centro de cada fantasma
             var distance1 = Math.sqrt(Math.pow(pacman.x - ghost1.x, 2) + Math.pow(pacman.y - ghost1.y, 2));
@@ -304,6 +318,17 @@
 
             function gameLoop() {
             updatePacman();
+            // Actualizar la posición de Pacman
+            updatePacmanPosition();
+
+            // Comprobar la colisión con las paredes
+            checkCollisionWithWalls();
+
+            // Dibujar el juego
+            drawGame();
+
+            // Repetir el bucle principal del juego
+            requestAnimationFrame(mainLoop);
 
             // Dibujar el mapa, los puntos y los fantasmas
             drawMap();

@@ -297,20 +297,26 @@
             }
             }
 
-            function checkCollisionWithWalls(pacmanPosition) {
+            function checkCollisionWithWalls(pacman, walls) {
+            let collision = false; // Definimos la variable collision y la inicializamos en false
+
             for (let i = 0; i < walls.length; i++) {
-                const wall = walls[i];
-                if (
-                pacmanPosition.x < wall.position.x + pacman.width &&
-                pacmanPosition.x + pacman.width > wall.position.x &&
-                pacmanPosition.y < wall.position.y + pacman.height &&
-                pacmanPosition.y + pacman.height > wall.position.y
-                ) {
-                return true;
+                let wall = walls[i];
+                if (pacman.position.x < wall.position.x + wall.width &&
+                    pacman.position.x + pacman.width > wall.position.x &&
+                    pacman.position.y < wall.position.y + wall.height &&
+                    pacman.position.y + pacman.height > wall.position.y) {
+                collision = true; // Si hay una colisión, establecemos collision en true
                 }
             }
-            return false;
+
+            if (collision) {
+                // Aquí puedes tomar las acciones necesarias si hay una colisión
+                // Por ejemplo, detener el movimiento de Pacman
+                pacman.speed = 0;
             }
+            }
+
             function checkCollisions() {
             // Calcular la distancia entre el centro del pacman y el centro de cada fantasma
             var distance1 = Math.sqrt(Math.pow(pacman.x - ghost1.x, 2) + Math.pow(pacman.y - ghost1.y, 2));

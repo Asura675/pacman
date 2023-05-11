@@ -390,25 +390,18 @@
             }
 
             function updatePacmanPosition() {
-            var newPacmanX = pacman.x + direction.x * PACMAN_SPEED;
-            var newPacmanY = pacman.y + direction.y * PACMAN_SPEED;
-
-            // Verificar si la nueva posición de Pacman está dentro del canvas
-            if (newPacmanX < 0 || newPacmanX > canvas.width || newPacmanY < 0 || newPacmanY > canvas.height) {
-                return;
-            }
-
-            // Verificar si la nueva posición de Pacman está en una pared
-            var row = Math.floor(newPacmanY / CELL_SIZE);
-            var col = Math.floor(newPacmanX / CELL_SIZE);
-            if (MAP[row][col] === "#") {
-                return;
-            }
-
             // Actualizar la posición de Pacman
-            pacman.x = newPacmanX;
-            pacman.y = newPacmanY;
+            pacmanPosition.x += pacmanSpeed.x;
+            pacmanPosition.y += pacmanSpeed.y;
+            
+            // Detectar colisiones con las paredes
+            checkCollisionWithWalls();
+
+            // Actualizar la posición de Pacman en el canvas
+            pacman.x = pacmanPosition.x;
+            pacman.y = pacmanPosition.y;
             }
+
             function animate() {
             // Solicitar una nueva animación de fotograma
             requestAnimationFrame(animate);

@@ -297,24 +297,23 @@
             }
             }
 
-            function checkCollisionWithWalls(pacman, walls) {
-            let collision = false; // Definimos la variable collision y la inicializamos en false
-
+            function checkCollisionWithWalls(pacmanPosition) {
+            let collision = false; // definir la variable fuera del bucle for
+            
             for (let i = 0; i < walls.length; i++) {
                 let wall = walls[i];
-                if (pacman.position.x < wall.position.x + wall.width &&
-                    pacman.position.x + pacman.width > wall.position.x &&
-                    pacman.position.y < wall.position.y + wall.height &&
-                    pacman.position.y + pacman.height > wall.position.y) {
-                collision = true; // Si hay una colisión, establecemos collision en true
+                
+                if (
+                pacmanPosition.x < wall.position.x + wall.width &&
+                pacmanPosition.x + pacman.width > wall.position.x &&
+                pacmanPosition.y < wall.position.y + wall.height &&
+                pacmanPosition.y + pacman.height > wall.position.y
+                ) {
+                collision = true; // establecer en true si hay colisión
                 }
             }
-
-            if (collision) {
-                // Aquí puedes tomar las acciones necesarias si hay una colisión
-                // Por ejemplo, detener el movimiento de Pacman
-                pacman.speed = 0;
-            }
+            
+            return collision;
             }
 
             function checkCollisions() {

@@ -343,29 +343,12 @@
             }
 
             function gameLoop() {
-            updatePacman();
-            // Actualizar la posición de Pacman
-            updatePacmanPosition();
-
-            // Comprobar la colisión con las paredes
-            checkCollisionWithWalls();
-
-            // Dibujar el juego
-            drawGame();
-
-            // Repetir el bucle principal del juego
-            requestAnimationFrame(mainLoop);
-
-            // Dibujar el mapa, los puntos y los fantasmas
-            drawMap();
-            drawDots();
-            drawGhosts();
-            drawPacman();
-            checkCollisions();
-            drawScore();
-
-            setTimeout(gameLoop, 1000 / FPS);
+            updatePacmanPosition(); // Actualizar la posición de Pacman al inicio de cada ciclo
+            checkCollisionWithWalls(); // Comprobar la colisión con las paredes
+            drawGame(); // Dibujar el juego
+            requestAnimationFrame(gameLoop); // Repetir el bucle principal del juego
             }
+
             function updatePacman() {
             pacman.x += pacmanDirection.x * PACMAN_SPEED;
             pacman.y += pacmanDirection.y * PACMAN_SPEED;

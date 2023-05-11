@@ -222,7 +222,27 @@
             }
 
             // Redibujar el juego
-            drawGame();
+            function drawGame() {
+            // Limpiar el canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar el laberinto
+            walls.forEach(function(wall) {
+                context.beginPath();
+                context.rect(wall.x, wall.y, wall.width, wall.height);
+                context.fillStyle = '#0000FF';
+                context.fill();
+                context.closePath();
+            });
+
+            // Dibujar a Pacman
+            context.beginPath();
+            context.arc(pacman.x, pacman.y, pacman.radius, pacman.mouthAngle1, pacman.mouthAngle2);
+            context.lineTo(pacman.x, pacman.y);
+            context.fillStyle = '#FFFF00';
+            context.fill();
+            context.closePath();
+            }
 
             // Actualizar la posición de Pacman según la tecla presionada
             document.addEventListener("keydown", function (event) {

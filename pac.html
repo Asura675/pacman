@@ -165,8 +165,8 @@
 
         // Definir la posición inicial de Pacman
         var pacman = {
-        x: CELL_SIZE * 1.5,
-        y: CELL_SIZE * 1.5,
+        x: CELL_SIZE * 15,
+        y: CELL_SIZE * 20.5,
         radius: CELL_SIZE / 2,
         };
         var pacmanDirection = {
@@ -395,12 +395,6 @@
 
             // Comprobar las colisiones
             checkCollisions();
-
-            // Dibujar el mapa y los elementos del juego
-            drawMap();
-            drawPacman();
-            drawGhosts();
-
             // Actualizar la posición del personaje
             pacman.x += direction.x * PACMAN_SPEED;
             pacman.y += direction.y * PACMAN_SPEED;

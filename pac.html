@@ -229,8 +229,6 @@
             } else if (pacman.direction === "down") {
                 pacman.y += CELL_SIZE / (GAME_SPEED / 10);
             }
-<<<<<<< HEAD
-=======
 
             function canMoveTo(row, col) {
             return (MAP[row][col] !== "#");
@@ -358,7 +356,7 @@
             // Comprobar la colisión con las paredes
             checkCollisionWithWalls();
 
->>>>>>> parent of 3732bc2 (update)
+
             // Dibujar el juego
             drawMap();
             drawPacman();
@@ -368,6 +366,7 @@
         }
 
         requestAnimationFrame(gameLoop);
+    }
         </script>
     </body>
 </html>

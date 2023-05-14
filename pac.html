@@ -205,21 +205,6 @@
             return MAP[Math.floor(y / CELL_SIZE)][Math.floor(x / CELL_SIZE)] === "#";
             }
 
-           // Mover a Pacman
-           function movePacman() {
-            var nextX = pacman.x + direction.x * PACMAN_SPEED;
-            var nextY = pacman.y + direction.y * PACMAN_SPEED;
-
-            // Verificar si la siguiente celda es una pared
-            var nextRow = Math.floor(nextY / CELL_SIZE);
-            var nextCol = Math.floor(nextX / CELL_SIZE);
-            if (MAP[nextRow][nextCol] !== "#") {
-                // La siguiente celda no es una pared, actualizar la posición del personaje
-                pacman.x = nextX;
-                pacman.y = nextY;
-            }
-            }
-
             // Actualizar la posición de Pacman según la tecla presionada
             document.addEventListener("keydown", function (event) {
             if (event.key === "ArrowUp") {

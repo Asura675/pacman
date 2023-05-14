@@ -280,7 +280,7 @@
                 reset();
             }
             }
-            
+
             function updatePacman() {
             pacman.x += pacmanDirection.x * PACMAN_SPEED;
             pacman.y += pacmanDirection.y * PACMAN_SPEED;
@@ -297,7 +297,7 @@
             function gameLoop() {
             updatePacman();
 
-            // Dibujar el mapa, los puntos y los fantasmas
+            // Dibujar el mapa, los puntos, los fantasmas, colision con fantasmas causa un gameover
             drawDots();
             checkCollisions();
             drawScore();
@@ -305,7 +305,6 @@
             setTimeout(gameLoop, 1000 / FPS);
             }
             
-
             function drawScore() {
             var scoreElement = document.getElementById("score");
             scoreElement.innerHTML = "Score: " + score;

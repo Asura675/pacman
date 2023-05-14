@@ -240,16 +240,7 @@
             function animate() {
             // Borrar el canvas
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-            // Dibujar a Pacman y actualizar la apertura de su boca
-            function drawPacman() {
-            ctx.fillStyle = COLOR_PACMAN;
-            ctx.beginPath();
-            ctx.arc(pacman.x + CELL_SIZE / 2, pacman.y + CELL_SIZE / 2, CELL_SIZE / 2, pacman.angle + Math.PI / 6, pacman.angle + 11 * Math.PI / 6);
-            ctx.lineTo(pacman.x + CELL_SIZE / 2, pacman.y + CELL_SIZE / 2);
-            ctx.fill();
-            }
-
+            
             // Volver a animar en el siguiente cuadro
             requestAnimationFrame(animate);
             }
@@ -379,11 +370,7 @@
             // Limpiar el canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Comprobar las colisiones
-            checkCollisions();
-            // Actualizar la posición del personaje
-            pacman.x += direction.x * PACMAN_SPEED;
-            pacman.y += direction.y * PACMAN_SPEED;
+            
 
             // Esperar al siguiente fotograma
             setTimeout(main, 1000 / FPS);
@@ -393,8 +380,6 @@
             score += 10; // increase score
             updateScore(); // update score display
          }
-         
-         
         </script>
     </body>
 </html>

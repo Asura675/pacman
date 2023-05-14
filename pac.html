@@ -366,15 +366,7 @@
             // Iniciar la animación del juego
             animate();
 
-            function main() {
-            // Limpiar el canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            
-
-            // Esperar al siguiente fotograma
-            setTimeout(main, 1000 / FPS);
-            }
+          
             function eatDot(x, y) {
             MAP[y] = MAP[y].substr(0, x) + " " + MAP[y].substr(x + 1); // remove dot from map
             score += 10; // increase score

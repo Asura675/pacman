@@ -238,8 +238,7 @@
             });
             // Animar el juego
             function animate() {
-            // Borrar el canvas
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            
             
             // Volver a animar en el siguiente cuadro
             requestAnimationFrame(animate);
@@ -314,6 +313,7 @@
             requestAnimationFrame(gameLoop);
 
             function update() {
+                
             // Detección de colisiones con los puntos
             var row = Math.floor(pacman.y / CELL_SIZE);
             var col = Math.floor(pacman.x / CELL_SIZE);
@@ -335,26 +335,6 @@
             drawPacman();
             }
 
-            function updatePacmanPosition() {
-            var newPacmanX = pacman.x + direction.x * PACMAN_SPEED;
-            var newPacmanY = pacman.y + direction.y * PACMAN_SPEED;
-
-            // Verificar si la nueva posición de Pacman está dentro del canvas
-            if (newPacmanX < 0 || newPacmanX > canvas.width || newPacmanY < 0 || newPacmanY > canvas.height) {
-                return;
-            }
-
-            // Verificar si la nueva posición de Pacman está en una pared
-            var row = Math.floor(newPacmanY / CELL_SIZE);
-            var col = Math.floor(newPacmanX / CELL_SIZE);
-            if (MAP[row][col] === "#") {
-                return;
-            }
-
-            // Actualizar la posición de Pacman
-            pacman.x = newPacmanX;
-            pacman.y = newPacmanY;
-            }
             function animate() {
             // Solicitar una nueva animación de fotograma
             requestAnimationFrame(animate);
@@ -366,12 +346,6 @@
             // Iniciar la animación del juego
             animate();
 
-          
-            function eatDot(x, y) {
-            MAP[y] = MAP[y].substr(0, x) + " " + MAP[y].substr(x + 1); // remove dot from map
-            score += 10; // increase score
-            updateScore(); // update score display
-         }
         </script>
     </body>
 </html>

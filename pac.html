@@ -190,13 +190,24 @@
         return MAP[row][col];
         }
 
-        function checkCollision(rect1, rect2) {
-            return rect1.x < rect2.x + rect2.width &&
-                    rect1.x + rect1.width > rect2.x &&
-                    rect1.y < rect2.y + rect2.height &&
-                    rect1.y + rect1.height > rect2.y;
+        function checkCollision(pacman, MAP) {
+            for (let i = 0; i < MAP.length; i++) {
+                for (let j = 0; j < MAP[i].length; j++) {
+                if (MAP[i][j] === '#') {
+                    // check if pacman collides with wall
+                    if (
+                    pacman.x + pacman.radius > j * 20 &&
+                    pacman.x - pacman.radius < (j + 1) * 20 &&
+                    pacman.y + pacman.radius > i * 20 &&
+                    pacman.y - pacman.radius < (i + 1) * 20
+                    ) {
+                    pacman.vx = 0;
+                    pacman.vy = 0;
+                    }
+                }
+                }
             }
-
+            }
             function canMoveTo(row, col) {
             return (MAP[row][col] !== "#");
             }
@@ -223,7 +234,6 @@
             });
             // Animar el juego
             function animate() {
-            
             
             // Volver a animar en el siguiente cuadro
             requestAnimationFrame(animate);

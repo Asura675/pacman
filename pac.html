@@ -388,25 +388,13 @@
             // Esperar al siguiente fotograma
             setTimeout(main, 1000 / FPS);
             }
-          
-
             function eatDot(x, y) {
             MAP[y] = MAP[y].substr(0, x) + " " + MAP[y].substr(x + 1); // remove dot from map
             score += 10; // increase score
             updateScore(); // update score display
          }
          
-            // Dibujar el mapa, a Pac-Man y a los fantasmas
-            function draw() {
-            // borrar la pantalla
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-            // esperar 1/60 segundos y volver a dibujar
-            setTimeout(function() {
-                requestAnimationFrame(draw);
-            }, 1000 / 60);
-            }
-           
+         
         </script>
     </body>
 </html>

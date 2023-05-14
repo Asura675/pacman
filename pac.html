@@ -280,17 +280,7 @@
                 reset();
             }
             }
-
-            function gameLoop() {
-            updatePacman();
-
-            // Dibujar el mapa, los puntos y los fantasmas
-            drawDots();
-            checkCollisions();
-            drawScore();
-
-            setTimeout(gameLoop, 1000 / FPS);
-            }
+            
             function updatePacman() {
             pacman.x += pacmanDirection.x * PACMAN_SPEED;
             pacman.y += pacmanDirection.y * PACMAN_SPEED;
@@ -304,6 +294,18 @@
             }
             }
 
+            function gameLoop() {
+            updatePacman();
+
+            // Dibujar el mapa, los puntos y los fantasmas
+            drawDots();
+            checkCollisions();
+            drawScore();
+
+            setTimeout(gameLoop, 1000 / FPS);
+            }
+            
+
             function drawScore() {
             var scoreElement = document.getElementById("score");
             scoreElement.innerHTML = "Score: " + score;
@@ -313,14 +315,6 @@
             requestAnimationFrame(gameLoop);
 
             function update() {
-                
-            // Detección de colisiones con los puntos
-            var row = Math.floor(pacman.y / CELL_SIZE);
-            var col = Math.floor(pacman.x / CELL_SIZE);
-            if (MAP[row][col] === ".") {
-                MAP[row] = MAP[row].substr(0, col) + " " + MAP[row].substr(col + 1);
-            }
-
             // Dibujar el mapa, Pac-Man y los fantasmas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawMap();

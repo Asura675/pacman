@@ -191,32 +191,36 @@
         }
 
         function checkCollision() {
-        for (var i = 0; i < MAP.length; i++) {
-            var wall = MAP[i];
-            if (wall == "#") {
-            var wallX = (i % ROWS) * TILE_SIZE;
-            var wallY = Math.floor(i / ROWS) * TILE_SIZE;
-            if (player.x + player.radius > wallX &&   // jugador a la derecha de la pared
-                player.x - player.radius < wallX + TILE_SIZE &&   // jugador a la izquierda de la pared
-                player.y + player.radius > wallY &&   // jugador debajo de la pared
-                player.y - player.radius < wallY + TILE_SIZE) {   // jugador encima de la pared
-                // Colisión detectada
-                var left = player.x - player.radius;
-                var right = player.x + player.radius;
-                var top = player.y - player.radius;
-                var bottom = player.y + player.radius;
-                if (left < wallX + TILE_SIZE && right > wallX) {
-                // Jugador colisiona horizontalmente con la pared
-                if (top < wallY + TILE_SIZE && bottom > wallY) {
-                    // Jugador colisiona también verticalmente con la pared
-                    player.x = lastValidX;
-                    player.y = lastValidY;
+            for (var i = 0; i < MAP.length; i++) {
+                for (var j = 0; j < MAP[i].length; j++) {
+                if (MAP[i][j] === "#") {
+                    var wallX = j * TILE_SIZE;
+                    var wallY = i * TILE_SIZE;
+                    var pacmanLeft = PACMAN.x - PACMAN.radius;
+                    var pacmanRight = PACMAN.x + PACMAN.radius;
+                    var pacmanTop = PACMAN.y - PACMAN.radius;
+                    var pacmanBottom = PACMAN.y + PACMAN.radius;
+
+                    if (pacmanRight > wallX && pacmanLeft < wallX + TILE_SIZE &&
+                    pacmanBottom > wallY && pacmanTop < wallY + TILE_SIZE) {
+                    PACMAN.velX = 0;
+                    PACMAN.velY = 0;
+
+                    // move Pacman outside of wall
+                    if (PACMAN.x < wallX) {
+                        PACMAN.x = wallX - PACMAN.radius;
+                    } else if (PACMAN.x > wallX + TILE_SIZE) {
+                        PACMAN.x = wallX + TILE_SIZE + PACMAN.radius;
+                    } else if (PACMAN.y < wallY) {
+                        PACMAN.y = wallY - PACMAN.radius;
+                    } else {
+                        PACMAN.y = wallY + TILE_SIZE + PACMAN.radius;
+                    }
+                    }
                 }
                 }
             }
             }
-        }
-        }
 
             function canMoveTo(row, col) {
             return (MAP[row][col] !== "#");

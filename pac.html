@@ -190,24 +190,34 @@
         return MAP[row][col];
         }
 
-        function checkCollision(pacman, MAP) {
-            for (let i = 0; i < MAP.length; i++) {
-                for (let j = 0; j < MAP[i].length; j++) {
-                if (MAP[i][j] === '#') {
-                    // check if pacman collides with wall
-                    if (
-                    pacman.x + pacman.radius > j * 20 &&
-                    pacman.x - pacman.radius < (j + 1) * 20 &&
-                    pacman.y + pacman.radius > i * 20 &&
-                    pacman.y - pacman.radius < (i + 1) * 20
-                    ) {
-                    pacman.vx = 0;
-                    pacman.vy = 0;
-                    }
+        function checkCollision() {
+        for (var i = 0; i < MAP.length; i++) {
+            var wall = MAP[i];
+            if (wall == "#") {
+            var wallX = (i % ROWS) * TILE_SIZE;
+            var wallY = Math.floor(i / ROWS) * TILE_SIZE;
+            if (player.x + player.radius > wallX &&   // jugador a la derecha de la pared
+                player.x - player.radius < wallX + TILE_SIZE &&   // jugador a la izquierda de la pared
+                player.y + player.radius > wallY &&   // jugador debajo de la pared
+                player.y - player.radius < wallY + TILE_SIZE) {   // jugador encima de la pared
+                // Colisión detectada
+                var left = player.x - player.radius;
+                var right = player.x + player.radius;
+                var top = player.y - player.radius;
+                var bottom = player.y + player.radius;
+                if (left < wallX + TILE_SIZE && right > wallX) {
+                // Jugador colisiona horizontalmente con la pared
+                if (top < wallY + TILE_SIZE && bottom > wallY) {
+                    // Jugador colisiona también verticalmente con la pared
+                    player.x = lastValidX;
+                    player.y = lastValidY;
                 }
                 }
             }
             }
+        }
+        }
+
             function canMoveTo(row, col) {
             return (MAP[row][col] !== "#");
             }
@@ -314,6 +324,7 @@
             drawMap();
             drawGhosts();
             drawPacman();
+            checkCollision(pacman, walls);
             }
 
             function animate() {

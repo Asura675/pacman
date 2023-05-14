@@ -321,13 +321,6 @@
                 MAP[row] = MAP[row].substr(0, col) + " " + MAP[row].substr(col + 1);
             }
 
-            // Actualizar el ángulo de apertura de la boca de Pac-Man
-            if (pacman.mouthAngle < 0.2) {
-                pacman.mouthAngle = 1.5;
-            } else {
-                pacman.mouthAngle -= 0.1;
-            }
-
             // Dibujar el mapa, Pac-Man y los fantasmas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawMap();

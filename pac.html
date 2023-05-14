@@ -295,10 +295,7 @@
             updatePacman();
 
             // Dibujar el mapa, los puntos y los fantasmas
-            drawMap();
             drawDots();
-            drawGhosts();
-            drawPacman();
             checkCollisions();
             drawScore();
 
@@ -313,7 +310,7 @@
             var pacmanCol = Math.floor(pacman.x / CELL_SIZE);
             if (MAP[pacmanRow][pacmanCol] === ".") {
                 MAP[pacmanRow] = MAP[pacmanRow].substr(0, pacmanCol) + " " + MAP[pacmanRow].substr(pacmanCol + 1);
-                score+= 100;
+                score+= 10;
             }
             }
 
@@ -391,9 +388,7 @@
             // Esperar al siguiente fotograma
             setTimeout(main, 1000 / FPS);
             }
-            function updateScore() {
-            document.getElementById("score").textContent = "Score: " + score;
-            }
+          
 
             function eatDot(x, y) {
             MAP[y] = MAP[y].substr(0, x) + " " + MAP[y].substr(x + 1); // remove dot from map
@@ -406,28 +401,12 @@
             // borrar la pantalla
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-            // dibujar el mapa, los puntos y los fantasmas
-            drawMap();
-            drawDots();
-            drawPowerPills();
-            drawGhosts();
-
-            // dibujar a Pacman
-            drawPacman();
-
             // esperar 1/60 segundos y volver a dibujar
             setTimeout(function() {
                 requestAnimationFrame(draw);
             }, 1000 / 60);
             }
-            function drawGame() {
-            drawMap();
-            drawPacman();
-            drawGhosts();
-            drawScore();
-            }
-
-           drawGame();
+           
         </script>
     </body>
 </html>

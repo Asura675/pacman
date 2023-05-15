@@ -76,14 +76,7 @@
 
         // Dibujar el mapa del juego
             function drawMap() {
-                var wallPositions = []; // matriz para almacenar las posiciones de las paredes
-                for (var y = 0; y < MAP.length; y++) { // bucle para iterar sobre cada fila del mapa
-                    for (var x = 0; x < MAP[y].length; x++) { // bucle para iterar sobre cada carácter de la fila
-                    if (MAP[y][x] === "#") { // si el carácter es una pared
-                        wallPositions.push([x, y]); // agregar la posición a la matriz
-                    }
-                    }
-                }
+                
                 for (var row = 0; row < MAP.length; row++) {
                 for (var col = 0; col < MAP[row].length; col++) {
                 var cell = MAP[row][col];
@@ -341,6 +334,7 @@
 
             // Iniciar la animación del juego
             animate();
+            
 
         </script>
     </body>

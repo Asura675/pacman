@@ -210,17 +210,17 @@
         ctx.lineTo(pacman.x, pacman.y);
         ctx.closePath();
         ctx.fill();
+        // Verificar si Pacman se ha salido del canvas hacia la derecha
+        if (pacman.x > canvas.width + pacman.radius) {
+          pacman.x = -pacman.radius;  // Teletransportar Pacman al lado izquierdo
+        }
 
+        // Verificar si Pacman se ha salido del canvas hacia la izquierda
+        if (pacman.x < -pacman.radius) {
+          pacman.x = canvas.width + pacman.radius;  // Teletransportar Pacman al lado derecho
+        }
         /* tempDraw(); */
       }
-      function teleportPacman() {
-      if (pacman.x < -pacman.radius) {
-        pacman.x = canvas.width + pacman.radius;
-      } else if (pacman.x > canvas.width + pacman.radius) {
-        pacman.x = -pacman.radius;
-      }
-    }
-
 
       function getMapValue(row, col) {
         if (row < 0 || row >= MAP.length || col < 0 || col >= MAP[row].length) {

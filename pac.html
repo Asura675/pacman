@@ -1,124 +1,154 @@
-+<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-            <meta charset="UTF-8">
-            <title>Pacman</title>
-            <style>
-                canvas{
-                    background-color: black;
-                }
-            </style>
-    </head>
-    <body>
-        <div id="score"></div>
-        <canvas id="canvas" width="640" height="480"></canvas>
-        <script>
-        // Definir el mapa del juego como una matriz de caracteres
-        var MAP = [
-            "##############################",
-            "#O............##............O#",
-            "#.####.######.##.######.####.#",
-            "#.#  #.#    #.##.#    #.#  #.#",
-            "#.####.######.##.######.####.#",
-            "#............................#",
-            "#.####.#.############.#.####.#",
-            "#......#......##......#......#",
-            "######.######.##.######.######",
-            "#    #.##            ##.#    #",
-            "#    #.## ####  #### ##.#    #",
-            "######.## #        # ##.######",
-            "      .   #        #   .      ",
-            "######.## #        # ##.######",
-            "#    #.## ########## ##.#    #",
-            "#    #.##            ##.#    #",
-            "######.## ########## ##.######",
-            "#............####............#",
-            "#.####.#####.####.#####.####.#",
-            "#...##.#####.####.#####.##...#",
-            "###.##........  ........##.###",
-            "#......##.##########.##......#",
-            "#.#######....####....#######.#",
-            "#.##########.####.##########.#",
-            "#O..........................O#",
-            "##############################"
-        ];
-        const PACMAN_SPEED = 1.5;
-        FPS = 60;
-        var direction = {x: 0, y: 0};
-        var score = 0;
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pacman</title>
+    <style>
+      canvas {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="score"></div>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script>
+      // Definir el mapa del juego como una matriz de caracteres
+      var MAP = [
+        "##############################",
+        "#O............##............O#",
+        "#.####.######.##.######.####.#",
+        "#.#  #.#    #.##.#    #.#  #.#",
+        "#.####.######.##.######.####.#",
+        "#............................#",
+        "#.####.#.############.#.####.#",
+        "#......#......##......#......#",
+        "######.######.##.######.######",
+        "#    #.##            ##.#    #",
+        "#    #.## ####  #### ##.#    #",
+        "######.## #        # ##.######",
+        "      .   #        #   .      ",
+        "######.## #        # ##.######",
+        "#    #.## ########## ##.#    #",
+        "#    #.##            ##.#    #",
+        "######.## ########## ##.######",
+        "#............####............#",
+        "#.####.#####.####.#####.####.#",
+        "#...##.#####.####.#####.##...#",
+        "###.##........  ........##.###",
+        "#......##.##########.##......#",
+        "#.#######....####....#######.#",
+        "#.##########.####.##########.#",
+        "#O..........................O#",
+        "##############################",
+      ];
+      const PACMAN_SPEED = 1.5;
+      FPS = 60;
+      var direction = { x: 0, y: 0 };
+      var score = 0;
 
-        // Definir el tamaño de cada celda del mapa
-        var CELL_SIZE = 20;
+      // Definir el tamaño de cada celda del mapa
+      var CELL_SIZE = 20;
 
-        // Calcular el número de filas y columnas del mapa
-        var numRows = MAP.length;
-        var numCols = MAP[0].length;
+      // Calcular el número de filas y columnas del mapa
+      var numRows = MAP.length;
+      var numCols = MAP[0].length;
 
-        // Calcular el tamaño del canvas
-        var canvasWidth = numCols * CELL_SIZE;
-        var canvasHeight = numRows * CELL_SIZE;
+      // Calcular el tamaño del canvas
+      var canvasWidth = numCols * CELL_SIZE;
+      var canvasHeight = numRows * CELL_SIZE;
 
-        // Obtener el canvas y el contexto 2D
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
+      // Obtener el canvas y el contexto 2D
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
 
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-        // Definir los colores para los diferentes elementos del juego
-        var COLOR_WALL = "#0000ff";
-        var COLOR_DOT = "#ffffff";
-        var COLOR_POWERP = "white";
-        var COLOR_PACMAN = "#ffff00";
-        var COLOR_GHOST1 = "#ff0000";
-        var COLOR_GHOST2 = "#ffa500";
-        var COLOR_GHOST3 = "#00ffff";
-        var COLOR_GHOST4 = "#ff00ff";
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+      // Definir los colores para los diferentes elementos del juego
+      var COLOR_WALL = "#0000ff";
+      var COLOR_DOT = "#ffffff";
+      var COLOR_POWERP = "white";
+      var COLOR_PACMAN = "#ffff00";
+      var COLOR_GHOST1 = "#ff0000";
+      var COLOR_GHOST2 = "#ffa500";
+      var COLOR_GHOST3 = "#00ffff";
+      var COLOR_GHOST4 = "#ff00ff";
 
-        // Dibujar el mapa del juego
-            function drawMap() {
-                
-                for (var row = 0; row < MAP.length; row++) {
-                for (var col = 0; col < MAP[row].length; col++) {
-                var cell = MAP[row][col];
-                if (cell === "#") {
-                    // Dibujar paredes
-                    ctx.fillStyle = COLOR_WALL;
-                    ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                } else if (cell === ".") {
-                    // Dibujar puntos
-                    ctx.fillStyle = COLOR_DOT;
-                    ctx.beginPath();
-                    ctx.arc(col * CELL_SIZE + CELL_SIZE / 2, row * CELL_SIZE + CELL_SIZE / 2, CELL_SIZE / 10, 0, 2 * Math.PI);
-                    ctx.fill();
-                }
-                }
-                }
+      function rectIntersect(rect1, rect2) {
+        return (
+          rect1.left < rect2.right &&
+          rect1.right > rect2.left &&
+          rect1.top < rect2.bottom &&
+          rect1.bottom > rect2.top
+        );
+      }
+
+      // Dibujar el mapa del juego
+      function drawMap() {
+        var wallPositions = []; // matriz para almacenar las posiciones de las paredes
+        for (var y = 0; y < MAP.length; y++) {
+          // bucle para iterar sobre cada fila del mapa
+          for (var x = 0; x < MAP[y].length; x++) {
+            // bucle para iterar sobre cada carácter de la fila
+            if (MAP[y][x] === "#") {
+              // si el carácter es una pared
+              wallPositions.push([x, y]); // agregar la posición a la matriz
             }
+          }
+        }
+        for (var row = 0; row < MAP.length; row++) {
+          for (var col = 0; col < MAP[row].length; col++) {
+            var cell = MAP[row][col];
+            if (cell === "#") {
+              // Dibujar paredes
+              ctx.fillStyle = COLOR_WALL;
+              ctx.fillRect(
+                col * CELL_SIZE,
+                row * CELL_SIZE,
+                CELL_SIZE,
+                CELL_SIZE
+              );
+            } else if (cell === ".") {
+              // Dibujar puntos
+              ctx.fillStyle = COLOR_DOT;
+              ctx.beginPath();
+              ctx.arc(
+                col * CELL_SIZE + CELL_SIZE / 2,
+                row * CELL_SIZE + CELL_SIZE / 2,
+                CELL_SIZE / 10,
+                0,
+                2 * Math.PI
+              );
+              ctx.fill();
+            }
+          }
+        }
+      }
 
-        // Definir la posición y tamaño de los fantasmas
-        var ghost1 = {
-            x: CELL_SIZE * 14.5,
-            y: CELL_SIZE * 11.5,
-            radius: CELL_SIZE / 2,
-        };
-        var ghost2 = {
-            x: CELL_SIZE * 14.5,
-            y: CELL_SIZE * 13.5,
-            radius: CELL_SIZE / 2,
-        };
-        var ghost3 = {
-            x: CELL_SIZE * 12.5,
-            y: CELL_SIZE * 13.5,
-            radius: CELL_SIZE / 2,
-        };
-        var ghost4 = {
-            x: CELL_SIZE * 12.5,
-            y: CELL_SIZE * 11.5,
-            radius: CELL_SIZE / 2,
-        };
+      // Definir la posición y tamaño de los fantasmas
+      var ghost1 = {
+        x: CELL_SIZE * 14.5,
+        y: CELL_SIZE * 11.5,
+        radius: CELL_SIZE / 2,
+      };
+      var ghost2 = {
+        x: CELL_SIZE * 14.5,
+        y: CELL_SIZE * 13.5,
+        radius: CELL_SIZE / 2,
+      };
+      var ghost3 = {
+        x: CELL_SIZE * 12.5,
+        y: CELL_SIZE * 13.5,
+        radius: CELL_SIZE / 2,
+      };
+      var ghost4 = {
+        x: CELL_SIZE * 12.5,
+        y: CELL_SIZE * 11.5,
+        radius: CELL_SIZE / 2,
+      };
 
-        // Dibujar los fantasmas
-        function drawGhosts() {
+      // Dibujar los fantasmas
+      function drawGhosts() {
         // Actualizar las coordenadas de cada fantasma
         ghost1.x += Math.random() - 0.5; // Sumar o restar un número aleatorio entre -0.5 y 0.5 a la posición actual
         ghost1.y += Math.random() - 0.5;
@@ -153,189 +183,273 @@
         ctx.arc(ghost4.x, ghost4.y, ghost4.radius, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.fill();
-        }
+      }
 
-        // Definir la posición inicial de Pacman
-        var pacman = {
+      // Definir la posición inicial de Pacman
+      var pacman = {
         x: CELL_SIZE * 15,
         y: CELL_SIZE * 20.5,
         radius: CELL_SIZE / 2,
-        };
-        var pacmanDirection = {
+      };
+      var pacmanDirection = {
         x: 0,
         y: 0,
-        };
+      };
 
-        // Dibujar a Pacman
-        function drawPacman() {
+      // Dibujar a Pacman
+      let tempDraw = () => null;
+      function drawPacman() {
         ctx.fillStyle = COLOR_PACMAN;
         ctx.beginPath();
-        ctx.arc(pacman.x, pacman.y, pacman.radius, 0.25 * Math.PI + Math.atan2(pacmanDirection.y, pacmanDirection.x), 1.75 * Math.PI + Math.atan2(pacmanDirection.y, pacmanDirection.x));
+        ctx.arc(
+          pacman.x,
+          pacman.y,
+          pacman.radius,
+          0.25 * Math.PI + Math.atan2(pacmanDirection.y, pacmanDirection.x),
+          1.75 * Math.PI + Math.atan2(pacmanDirection.y, pacmanDirection.x)
+        );
         ctx.lineTo(pacman.x, pacman.y);
         ctx.closePath();
         ctx.fill();
-        }
 
-        function getMapValue(row, col) {
+        /* tempDraw(); */
+      }
+
+      function getMapValue(row, col) {
         if (row < 0 || row >= MAP.length || col < 0 || col >= MAP[row].length) {
-            return "#"; // Si la posición está fuera del mapa, consideramos que hay una pared
+          return "#"; // Si la posición está fuera del mapa, consideramos que hay una pared
         }
         return MAP[row][col];
+      }
+
+      function checkCollision() {
+        for (var i = 0; i < MAP.length; i++) {
+          for (var j = 0; j < MAP[i].length; j++) {
+            if (MAP[i][j] === "#") {
+              var wallX = j * TILE_SIZE;
+              var wallY = i * TILE_SIZE;
+              var pacmanLeft = PACMAN.x - PACMAN.radius;
+              var pacmanRight = PACMAN.x + PACMAN.radius;
+              var pacmanTop = PACMAN.y - PACMAN.radius;
+              var pacmanBottom = PACMAN.y + PACMAN.radius;
+
+              if (
+                pacmanRight > wallX &&
+                pacmanLeft < wallX + TILE_SIZE &&
+                pacmanBottom > wallY &&
+                pacmanTop < wallY + TILE_SIZE
+              ) {
+                PACMAN.velX = 0;
+                PACMAN.velY = 0;
+
+                // move Pacman outside of wall
+                if (PACMAN.x < wallX) {
+                  PACMAN.x = wallX - PACMAN.radius;
+                } else if (PACMAN.x > wallX + TILE_SIZE) {
+                  PACMAN.x = wallX + TILE_SIZE + PACMAN.radius;
+                } else if (PACMAN.y < wallY) {
+                  PACMAN.y = wallY - PACMAN.radius;
+                } else {
+                  PACMAN.y = wallY + TILE_SIZE + PACMAN.radius;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      function canMoveTo(row, col) {
+        return MAP[row][col] !== "#";
+      }
+
+      function isWall(x, y) {
+        return (
+          MAP[Math.floor(y / CELL_SIZE)][Math.floor(x / CELL_SIZE)] === "#"
+        );
+      }
+
+      // Actualizar la posición de Pacman según la tecla presionada
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowUp") {
+          pacmanDirection.x = 0;
+          pacmanDirection.y = -1;
+        } else if (event.key === "ArrowDown") {
+          pacmanDirection.x = 0;
+          pacmanDirection.y = 1;
+        } else if (event.key === "ArrowLeft") {
+          pacmanDirection.x = -1;
+          pacmanDirection.y = 0;
+        } else if (event.key === "ArrowRight") {
+          pacmanDirection.x = 1;
+          pacmanDirection.y = 0;
+        }
+      });
+      // Animar el juego
+      function animate() {
+        // Volver a animar en el siguiente cuadro
+        requestAnimationFrame(animate);
+      }
+      function drawDots() {
+        for (var row = 0; row < MAP.length; row++) {
+          for (var col = 0; col < MAP[row].length; col++) {
+            if (MAP[row][col] === ".") {
+              // Dibujar puntos
+              ctx.fillStyle = COLOR_DOT;
+              ctx.beginPath();
+              ctx.arc(
+                col * CELL_SIZE + CELL_SIZE / 2,
+                row * CELL_SIZE + CELL_SIZE / 2,
+                CELL_SIZE / 10,
+                0,
+                2 * Math.PI
+              );
+              ctx.fill();
+            }
+          }
+        }
+      }
+
+      function checkCollisions() {
+        // Calcular la distancia entre el centro del pacman y el centro de cada fantasma
+        var distance1 = Math.sqrt(
+          Math.pow(pacman.x - ghost1.x, 2) + Math.pow(pacman.y - ghost1.y, 2)
+        );
+        var distance2 = Math.sqrt(
+          Math.pow(pacman.x - ghost2.x, 2) + Math.pow(pacman.y - ghost2.y, 2)
+        );
+        var distance3 = Math.sqrt(
+          Math.pow(pacman.x - ghost3.x, 2) + Math.pow(pacman.y - ghost3.y, 2)
+        );
+        var distance4 = Math.sqrt(
+          Math.pow(pacman.x - ghost4.x, 2) + Math.pow(pacman.y - ghost4.y, 2)
+        );
+
+        // Comprobar si el pacman choca con algún fantasma
+        if (
+          distance1 < pacman.radius + ghost1.radius ||
+          distance2 < pacman.radius + ghost2.radius ||
+          distance3 < pacman.radius + ghost3.radius ||
+          distance4 < pacman.radius + ghost4.radius
+        ) {
+          // Detener el movimiento del pacman
+          direction.x = 0;
+          direction.y = 0;
+
+          // Mostrar mensaje de Game Over
+          alert("Game Over");
+
+          // Reiniciar el juego
+          reset();
+        }
+      }
+
+      function isPacmanCollidingWithWall(x, y) {
+        for (var row = 0; row < MAP.length; row++) {
+          for (var col = 0; col < MAP[row].length; col++) {
+            var cell = MAP[row][col];
+
+            if (cell === "#") {
+              const wallRectHitbox = {
+                left: col * CELL_SIZE,
+                top: row * CELL_SIZE,
+                right: col * CELL_SIZE + CELL_SIZE,
+                bottom: row * CELL_SIZE + CELL_SIZE,
+              };
+
+              const { radius } = pacman;
+
+              const offset = 2;
+              const pacmanRectHitbox = {
+                left: x - radius + offset,
+                top: y - radius + offset,
+                right: x + radius - offset,
+                bottom: y + radius - offset,
+              };
+
+              const drawHitbox = (color = "red") => {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.strokeRect(
+                  pacmanRectHitbox.left,
+                  pacmanRectHitbox.top,
+                  pacmanRectHitbox.right - pacmanRectHitbox.left,
+                  pacmanRectHitbox.bottom - pacmanRectHitbox.top
+                );
+                ctx.closePath();
+                ctx.stroke();
+              };
+
+              if (rectIntersect(pacmanRectHitbox, wallRectHitbox)) {
+                tempDraw = () => drawHitbox("yellow");
+                return true;
+              }
+              tempDraw = () => drawHitbox("red");
+            }
+          }
         }
 
-        function checkCollision() {
-            for (var i = 0; i < MAP.length; i++) {
-                for (var j = 0; j < MAP[i].length; j++) {
-                if (MAP[i][j] === "#") {
-                    var wallX = j * TILE_SIZE;
-                    var wallY = i * TILE_SIZE;
-                    var pacmanLeft = PACMAN.x - PACMAN.radius;
-                    var pacmanRight = PACMAN.x + PACMAN.radius;
-                    var pacmanTop = PACMAN.y - PACMAN.radius;
-                    var pacmanBottom = PACMAN.y + PACMAN.radius;
+        return false;
+      }
 
-                    if (pacmanRight > wallX && pacmanLeft < wallX + TILE_SIZE &&
-                    pacmanBottom > wallY && pacmanTop < wallY + TILE_SIZE) {
-                    PACMAN.velX = 0;
-                    PACMAN.velY = 0;
+      function updatePacman() {
+        const newX = pacman.x + pacmanDirection.x * PACMAN_SPEED;
+        const newY = pacman.y + pacmanDirection.y * PACMAN_SPEED;
 
-                    // move Pacman outside of wall
-                    if (PACMAN.x < wallX) {
-                        PACMAN.x = wallX - PACMAN.radius;
-                    } else if (PACMAN.x > wallX + TILE_SIZE) {
-                        PACMAN.x = wallX + TILE_SIZE + PACMAN.radius;
-                    } else if (PACMAN.y < wallY) {
-                        PACMAN.y = wallY - PACMAN.radius;
-                    } else {
-                        PACMAN.y = wallY + TILE_SIZE + PACMAN.radius;
-                    }
-                    }
-                }
-                }
-            }
-            }
+        if (isPacmanCollidingWithWall(newX, newY) === false) {
+          pacman.x = newX;
+          pacman.y = newY;
+        }
 
-            function canMoveTo(row, col) {
-            return (MAP[row][col] !== "#");
-            }
+        // Verificar si Pacman ha llegado a una posición de punto
+        var pacmanRow = Math.floor(pacman.y / CELL_SIZE);
+        var pacmanCol = Math.floor(pacman.x / CELL_SIZE);
+        if (MAP[pacmanRow][pacmanCol] === ".") {
+          MAP[pacmanRow] =
+            MAP[pacmanRow].substr(0, pacmanCol) +
+            " " +
+            MAP[pacmanRow].substr(pacmanCol + 1);
+          score += 10;
+        }
+      }
 
-            function isWall(x, y) {
-            return MAP[Math.floor(y / CELL_SIZE)][Math.floor(x / CELL_SIZE)] === "#";
-            }
+      function gameLoop() {
+        updatePacman();
 
-            // Actualizar la posición de Pacman según la tecla presionada
-            document.addEventListener("keydown", function (event) {
-            if (event.key === "ArrowUp") {
-                pacmanDirection.x = 0;
-                pacmanDirection.y = -1;
-            } else if (event.key === "ArrowDown") {
-                pacmanDirection.x = 0;
-                pacmanDirection.y = 1;
-            } else if (event.key === "ArrowLeft") {
-                pacmanDirection.x = -1;
-                pacmanDirection.y = 0;
-            } else if (event.key === "ArrowRight") {
-                pacmanDirection.x = 1;
-                pacmanDirection.y = 0;
-            }
-            });
-            // Animar el juego
-            function animate() {
-            
-            // Volver a animar en el siguiente cuadro
-            requestAnimationFrame(animate);
-            }
-            function drawDots() {
-            for (var row = 0; row < MAP.length; row++) {
-                for (var col = 0; col < MAP[row].length; col++) {
-                if (MAP[row][col] === ".") {
-                    // Dibujar puntos
-                    ctx.fillStyle = COLOR_DOT;
-                    ctx.beginPath();
-                    ctx.arc(col * CELL_SIZE + CELL_SIZE / 2, row * CELL_SIZE + CELL_SIZE / 2, CELL_SIZE / 10, 0, 2 * Math.PI);
-                    ctx.fill();
-                }
-                }
-            }
-            }
+        // Dibujar el mapa, los puntos, los fantasmas, colision con fantasmas causa un gameover
+        drawDots();
+        checkCollisions();
+        drawScore();
 
-            function checkCollisions() {
-            // Calcular la distancia entre el centro del pacman y el centro de cada fantasma
-            var distance1 = Math.sqrt(Math.pow(pacman.x - ghost1.x, 2) + Math.pow(pacman.y - ghost1.y, 2));
-            var distance2 = Math.sqrt(Math.pow(pacman.x - ghost2.x, 2) + Math.pow(pacman.y - ghost2.y, 2));
-            var distance3 = Math.sqrt(Math.pow(pacman.x - ghost3.x, 2) + Math.pow(pacman.y - ghost3.y, 2));
-            var distance4 = Math.sqrt(Math.pow(pacman.x - ghost4.x, 2) + Math.pow(pacman.y - ghost4.y, 2));
+        setTimeout(gameLoop, 1000 / FPS);
+      }
 
-            // Comprobar si el pacman choca con algún fantasma
-            if (distance1 < pacman.radius + ghost1.radius ||
-                distance2 < pacman.radius + ghost2.radius ||
-                distance3 < pacman.radius + ghost3.radius ||
-                distance4 < pacman.radius + ghost4.radius) {
-                // Detener el movimiento del pacman
-                direction.x = 0;
-                direction.y = 0;
+      function drawScore() {
+        var scoreElement = document.getElementById("score");
+        scoreElement.innerHTML = "Score: " + score;
+      }
 
-                // Mostrar mensaje de Game Over
-                alert("Game Over");
+      // Iniciar el bucle de juego
+      requestAnimationFrame(gameLoop);
 
-                // Reiniciar el juego
-                reset();
-            }
-            }
+      function update() {
+        // Dibujar el mapa, Pac-Man y los fantasmas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawMap();
+        drawGhosts();
+        drawPacman();
+        checkCollision(pacman, walls);
+      }
 
-            function updatePacman() {
-            pacman.x += pacmanDirection.x * PACMAN_SPEED;
-            pacman.y += pacmanDirection.y * PACMAN_SPEED;
+      function animate() {
+        // Solicitar una nueva animación de fotograma
+        requestAnimationFrame(animate);
 
-            // Verificar si Pacman ha llegado a una posición de punto
-            var pacmanRow = Math.floor(pacman.y / CELL_SIZE);
-            var pacmanCol = Math.floor(pacman.x / CELL_SIZE);
-            if (MAP[pacmanRow][pacmanCol] === ".") {
-                MAP[pacmanRow] = MAP[pacmanRow].substr(0, pacmanCol) + " " + MAP[pacmanRow].substr(pacmanCol + 1);
-                score+= 10;
-            }
-            }
+        // Actualizar el juego
+        update();
+      }
 
-            function gameLoop() {
-            updatePacman();
-
-            // Dibujar el mapa, los puntos, los fantasmas, colision con fantasmas causa un gameover
-            drawDots();
-            checkCollisions();
-            drawScore();
-
-            setTimeout(gameLoop, 1000 / FPS);
-            }
-            
-            function drawScore() {
-            var scoreElement = document.getElementById("score");
-            scoreElement.innerHTML = "Score: " + score;
-            }
-
-            // Iniciar el bucle de juego
-            requestAnimationFrame(gameLoop);
-
-            function update() {
-            // Dibujar el mapa, Pac-Man y los fantasmas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawMap();
-            drawGhosts();
-            drawPacman();
-            checkCollision(pacman, walls);
-            }
-
-            function animate() {
-            // Solicitar una nueva animación de fotograma
-            requestAnimationFrame(animate);
-
-            // Actualizar el juego
-            update();
-            }
-
-            // Iniciar la animación del juego
-            animate();
-            
-
-        </script>
-    </body>
+      // Iniciar la animación del juego
+      animate();
+    </script>
+  </body>
 </html>

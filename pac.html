@@ -265,16 +265,6 @@
         }
       }
 
-      function canMoveTo(row, col) {
-        return MAP[row][col] !== "#";
-      }
-
-      function isWall(x, y) {
-        return (
-          MAP[Math.floor(y / CELL_SIZE)][Math.floor(x / CELL_SIZE)] === "#"
-        );
-      }
-
       // Actualizar la posición de Pacman según la tecla presionada
       document.addEventListener("keydown", function (event) {
         if (event.key === "ArrowUp") {
